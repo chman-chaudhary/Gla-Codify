@@ -1,0 +1,42 @@
+"use client";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOut } from "lucide-react";
+import { signIn, signOut, useSession } from "next-auth/react";
+
+export const SignInButton = () => {
+  const { data: session } = useSession();
+  if (session && session.user) {
+    return (
+      <div className="flex items-center gap-x-5">
+        <p>Welcome {session.user.name}</p>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Avatar>
+              <AvatarImage src={session.user?.image ?? ""} />
+              <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-2xl text-white font-bold">
+                {session.user.name?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent sideOffset={10} align="end">
+            <DropdownMenuItem disabled={true}>Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut()}>
+              <LogOut className="w-4 h-4 mr-2" />
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    );
+  }
+  return <Button onClick={() => signIn("google")}>Sign In</Button>;
+};
