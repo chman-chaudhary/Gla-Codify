@@ -5,6 +5,7 @@ import getProblems from "@/actions/getProblems";
 import { CodeEditor } from "@/app/components/problem/CodeEditor";
 import { ProblemDescription } from "@/app/components/problem/ProblemDescription";
 import { TestCase } from "@/app/components/problem/TestCase";
+import ProblemHeader from "@/app/components/problem/ProblemHeader";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -14,9 +15,12 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { NewProblem, Problem } from "@/actions/types";
 import { Status } from "@prisma/client";
+import { executeCode } from "@/actions/executeCode";
 
 export default function page({ params }: { params: { problemId: string } }) {
   const { data: session } = useSession();
+  const [output, setOutput] = useState<any>(null);
+  const [variables, setVaribles] = useState<string>();
   const [problem, setProblem] = useState<NewProblem>({
     id: 1, // Primary key for the problem
     title: "Add Two Numbers", // Problem title
@@ -102,22 +106,61 @@ export default function page({ params }: { params: { problemId: string } }) {
       },
     ],
     topics: ["Array", "Hash Table", "Two Pointers", "Sliding Window"],
-    hiddenCode: "def solution(nums):",
-    visibleCode: `/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
-class Solution {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        
+    hiddenCode: `public class Main {
+    public static void main(String[] args) {
+        ${variables}
+
+        Solution solution = new Solution();   
+
+        int[] mergedArray = solution.merge(nums1, m, nums2, n);
+
+        System.out.println("Merged array: " + Arrays.toString(mergedArray));
     }
 }`,
+    visibleCode: `public class Solution {
+    public int[] merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = m - 1, j = n - 1, k = m + n - 1;
+
+        while (i >= 0 && j >= 0) {
+            if (nums1[i] > nums2[j]) {
+                nums1[k] = nums1[i];
+                i--;
+            } else {
+                nums1[k] = nums2[j];
+                j--;
+            }
+            k--;
+        }
+
+        while (j >= 0) {
+            nums1[k] = nums2[j];
+            j--;
+            k--;
+        }
+
+        return nums1;
+    }
+}`,
+    testCases: [
+      {
+        input: {
+          nums1: [1, 2, 3, 0, 0, 0],
+          m: 3,
+          nums2: [2, 5, 6],
+          n: 3,
+        },
+        output: [1, 2, 2, 3, 5, 6],
+      },
+      {
+        input: {
+          nums1: [0],
+          m: 0,
+          nums2: [1],
+          n: 1,
+        },
+        output: [1],
+      },
+    ],
   });
 
   // useEffect(() => {
@@ -137,26 +180,32 @@ class Solution {
   //   fetchProblems();
   // }, []);
 
+  const populateTestcases = (hiddenCode: string, testcase: object) => {};
+
+  const handleRunCode = async (code: string) => {};
+
   return (
-    <div className="h-screen w-[90%] mx-auto pt-20 pb-3">
+    <div className="w-full h-screen flex flex-col">
+      <ProblemHeader problemId={params.problemId} />
       <ResizablePanelGroup
         direction="horizontal"
-        className="max-w-full min-h-full rounded-lg border md:min-w-[450px]"
+        className="max-w-full min-w-full rounded-lg md:min-w-[450px]"
       >
-        <ResizablePanel defaultSize={40}>
+        <ResizablePanel defaultSize={40} minSize={25}>
           <ProblemDescription problem={problem as NewProblem} />
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel defaultSize={60}>
+        <ResizablePanel defaultSize={60} minSize={40}>
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={70}>
-              <CodeEditor problem={problem as NewProblem} />
+              <CodeEditor
+                problem={problem as NewProblem}
+                onRunCode={handleRunCode}
+              />
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel defaultSize={30}>
-              <div className="flex h-full items-center justify-center p-6">
-                <TestCase />
-              </div>
+              <TestCase />
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>

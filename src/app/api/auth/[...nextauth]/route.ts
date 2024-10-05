@@ -40,6 +40,7 @@ export const authOptions = {
           },
         });
       }
+
       return true;
     },
   },

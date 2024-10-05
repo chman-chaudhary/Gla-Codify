@@ -15,34 +15,49 @@ import Editor from "@monaco-editor/react";
 import { Code, Code2, RepeatIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 
-export const CodeEditor = ({ problem }: { problem: NewProblem }) => {
+type CodeEditorProps = {
+  problem: NewProblem;
+  onRunCode: (code: string) => void;
+};
+
+export const CodeEditor = ({ problem, onRunCode }: CodeEditorProps) => {
   const [code, setCode] = useState<string>(problem.visibleCode);
   // const [language, setLanguage] = useState<string>("javascript");
+  const [hiddenCode, setHiddenCode] = useState<string>(problem.hiddenCode);
 
   useEffect(() => {
     setCode(problem.visibleCode);
   }, [problem.visibleCode]);
 
   return (
-    <div className="h-full w-full">
-      {/* <p>{language}</p> */}
-      {/* <TopBar setLanguage={setLanguage} /> */}
-      <TopBar />
+    <div className="h-full w-full bg-gray-700">
       <Editor
         defaultLanguage="java"
         defaultValue={code}
         theme="vs-dark"
         className="h-full w-full"
+        onChange={(value) => setCode(value as string)}
+        options={{
+          minimap: { enabled: false },
+        }}
       />
-      <Footer />
+      <Footer onRunCode={onRunCode} code={code} />
     </div>
   );
 };
 
-const Footer = () => {
+type FooterProps = {
+  onRunCode: (code: string) => void;
+  code: string;
+};
+
+const Footer = ({ onRunCode, code }: FooterProps) => {
   return (
-    <div className="flex items-center justify-end sticky bottom-0 pb-2 gap-3 pr-2">
-      <Button className="bg-gray-600 font-semibold hover:bg-gray-700">
+    <div className="flex items-center justify-end sticky bottom-0 pb-2 gap-3 pr-4">
+      <Button
+        className="bg-gray-600 font-semibold hover:bg-gray-700"
+        onClick={() => onRunCode(code)}
+      >
         Run
       </Button>
       <Button className="bg-green-600 font-semibold hover:bg-green-700">
@@ -55,17 +70,6 @@ const Footer = () => {
 // type TopBarProps = {
 //   setLanguage: (state: string) => void;
 // };
-
-const TopBar = () => {
-  return (
-    <h3 className="flex items-center gap-x-1 pl-2 py-[0.5px] sticky top-0 bg-gray-700 text-slate-300">
-      <span>
-        <Code2 className="text-green-500 size-5" />
-      </span>
-      Code
-    </h3>
-  );
-};
 
 // const SelectLanguage = ({
 //   setLanguage,

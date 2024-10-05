@@ -69,4 +69,10 @@ export type NewProblem = {
     userId: string | null;
     problemId: number | null;
   }[]; // Array of submissions, possibly empty
+  testCases: {
+    input: {
+      [key: string]: string | number | number[] | string[];
+    };
+    output: any;
+  }[];
 };

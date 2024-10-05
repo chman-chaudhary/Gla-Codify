@@ -26,9 +26,13 @@ export const LeaderBoard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getLeaderBoard();
-      setLeaderboard(data);
-      // console.log(data);
+      try {
+        const data = await getLeaderBoard();
+        setLeaderboard(data);
+        // console.log(data);
+      } catch (e) {
+        console.log("Error in fetching leaderboard", e);
+      }
     };
     fetchData();
   }, []);

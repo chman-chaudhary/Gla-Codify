@@ -33,17 +33,13 @@ export const ProblemDescription = ({ problem }: { problem: NewProblem }) => {
 
   return (
     <ScrollArea className="h-full">
-      <div className="space-y-5 m-5">
+      <div className="space-y-5 m-5 max-w-[700px]">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-semibold text-gray-800">
+          <h1 className="text-2xl font-semibold text-gray-800">
             {problem.id}. {problem.title}
           </h1>
-          {problem.isSolved ? (
-            <h1>
-              <CheckCircle className="text-green-600 mr-5" />
-            </h1>
-          ) : (
-            <></>
+          {problem.isSolved && (
+            <CheckCircle className="text-green-600 mr-5 size-5" />
           )}
         </div>
         <div>
@@ -61,50 +57,51 @@ export const ProblemDescription = ({ problem }: { problem: NewProblem }) => {
             </span>
           )}
         </div>
-        <div className="text-gray-600">
+        <div className="text-gray-600 space-y-3">
           {problem.description.split("\n").map((line, idx) => {
-            return (
-              <div>
-                <p>{line}</p>
-              </div>
-            );
+            return <p key={idx}>{line}</p>;
           })}
         </div>
 
         <div>
           {problem.examples.map((example, idx) => {
             return (
-              <div className="mb-4">
-                <h3 className="text-lg font-medium text-gray-800">
+              <div className="mb-4" key={idx}>
+                <h3 className="text-lg font-semibold text-gray-800">
                   Example {idx + 1}:{" "}
                 </h3>
-                {example.image ? (
-                  <div className="flex justify-center items-center max-w-[400px] my-3 p-2">
-                    <img src={example.image} alt="Example Image" />
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <p className="text-gray-600 ml-3 mt-1">
-                  Input: {example.input}
-                </p>
-                <p className="text-gray-600 ml-3 mt-1">
-                  Output: {example.output}
-                </p>
-                {example.explanation ? (
+                <div className="bg-secondary p-2 rounded-md">
+                  {example.image ? (
+                    <div className="flex justify-center items-center max-w-[400px] my-3 p-2">
+                      <img src={example.image} alt="Example Image" />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                   <p className="text-gray-600 ml-3 mt-1">
-                    Explanation: {example.explanation}
+                    <span className="font-semibold">Input:</span>{" "}
+                    <code>{example.input}</code>
                   </p>
-                ) : (
-                  <></>
-                )}
+                  <p className="text-gray-600 ml-3 mt-1">
+                    <span className="font-semibold">Output:</span>{" "}
+                    <code>{example.output}</code>
+                  </p>
+                  {example.explanation ? (
+                    <p className="text-gray-600 ml-3 mt-1">
+                      <span className="font-semibold">Explanation:</span>{" "}
+                      {example.explanation}
+                    </p>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </div>
             );
           })}
         </div>
 
-        <h3 className="text-lg font-medium text-gray-800">Constraints: </h3>
-        <div className="text-gray-600">
+        <h3 className="text-lg font-semibold text-gray-800">Constraints: </h3>
+        <div className="text-gray-600 bg-secondary p-2 rounded-md">
           <ul>
             {problem.constraints?.map((constraint) => {
               return (
