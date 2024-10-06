@@ -32,10 +32,10 @@ export const ProblemDescription = ({ problem }: { problem: NewProblem }) => {
   }, [problem]);
 
   return (
-    <ScrollArea className="h-full">
+    <ScrollArea className="h-full text-secondary-foreground">
       <div className="space-y-5 m-5 max-w-[700px]">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-semibold text-gray-800">
+          <h1 className="text-2xl font-semibold">
             {problem.id}. {problem.title}
           </h1>
           {problem.isSolved && (
@@ -57,7 +57,7 @@ export const ProblemDescription = ({ problem }: { problem: NewProblem }) => {
             </span>
           )}
         </div>
-        <div className="text-gray-600 space-y-3">
+        <div className="space-y-3">
           {problem.description.split("\n").map((line, idx) => {
             return <p key={idx}>{line}</p>;
           })}
@@ -67,9 +67,7 @@ export const ProblemDescription = ({ problem }: { problem: NewProblem }) => {
           {problem.examples.map((example, idx) => {
             return (
               <div className="mb-4" key={idx}>
-                <h3 className="text-lg font-semibold text-gray-800">
-                  Example {idx + 1}:{" "}
-                </h3>
+                <h3 className="text-lg font-semibold">Example {idx + 1}: </h3>
                 <div className="bg-secondary p-2 rounded-md">
                   {example.image ? (
                     <div className="flex justify-center items-center max-w-[400px] my-3 p-2">
@@ -78,16 +76,16 @@ export const ProblemDescription = ({ problem }: { problem: NewProblem }) => {
                   ) : (
                     <></>
                   )}
-                  <p className="text-gray-600 ml-3 mt-1">
+                  <p className="ml-3 mt-1">
                     <span className="font-semibold">Input:</span>{" "}
                     <code>{example.input}</code>
                   </p>
-                  <p className="text-gray-600 ml-3 mt-1">
+                  <p className="ml-3 mt-1">
                     <span className="font-semibold">Output:</span>{" "}
                     <code>{example.output}</code>
                   </p>
                   {example.explanation ? (
-                    <p className="text-gray-600 ml-3 mt-1">
+                    <p className=" ml-3 mt-1">
                       <span className="font-semibold">Explanation:</span>{" "}
                       {example.explanation}
                     </p>
@@ -100,8 +98,8 @@ export const ProblemDescription = ({ problem }: { problem: NewProblem }) => {
           })}
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-800">Constraints: </h3>
-        <div className="text-gray-600 bg-secondary p-2 rounded-md">
+        <h3 className="text-lg font-semibold">Constraints: </h3>
+        <div className="bg-secondary p-2 rounded-md">
           <ul>
             {problem.constraints?.map((constraint) => {
               return (
@@ -133,7 +131,7 @@ export const ProblemDescription = ({ problem }: { problem: NewProblem }) => {
               <div className="flex flex-wrap">
                 {problem.companies.map((company) => (
                   <span
-                    className="mr-4 bg-gray-800 text-white px-3 py-2 mb-2 rounded-lg text-md"
+                    className="mr-4 bg-gray-800 px-3 text-white py-2 mb-2 rounded-lg text-md"
                     key={company}
                   >
                     {company}

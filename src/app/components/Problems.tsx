@@ -89,9 +89,11 @@ export const Problems = () => {
                 )}
               </TableCell>
               <TableCell
-                className="max-w-48 min-w-48"
+                className="max-w-48 min-w-48 hover:underline"
                 onClick={() => {
-                  router.push(`/problem/${problem.id}`);
+                  session && session.user
+                    ? router.push(`/problem/${problem.id}`)
+                    : router.push("/auth");
                 }}
               >
                 {problem.id}. {problem.title}
@@ -134,7 +136,9 @@ export const Problems = () => {
                           : ""}
                       </AvatarFallback>
                     </Avatar>{" "}
-                    {problem.lastSolver?.name}
+                    <span className="hover:underline">
+                      {problem.lastSolver?.name}
+                    </span>
                   </>
                 ) : (
                   <BsDash className="size-5 text-yellow-500" />
@@ -145,11 +149,11 @@ export const Problems = () => {
         </TableBody>
       </Table>
       {showVideo && (
-        <div className="flex justify-center items-center fixed top-0 left-0 h-screen w-full backdrop-blur-sm">
+        <div className="flex fixed justify-center items-center top-0 left-0 h-screen w-full z-30 backdrop-blur-sm">
           <div>
             <div className="flex justify-end items-center w-full">
               <Cross2Icon
-                className="size-8 text-gray-400 hover:text-black"
+                className="size-8 hover:text-primary"
                 onClick={() => setShowVideo(false)}
               />
             </div>

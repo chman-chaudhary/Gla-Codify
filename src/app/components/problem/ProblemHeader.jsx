@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import AllProblems from "@/lib/AllProblems";
+import { ModeToggle } from "@/components/ui/ModeToggle";
 
 const ProblemHeader = ({ problemId }) => {
   const [time, setTime] = useState(0);
@@ -46,7 +47,7 @@ const ProblemHeader = ({ problemId }) => {
   return (
     <div className="flex justify-between items-center h-[10%] px-5 py-3 border-b-[0.5px] border-gray-300 backdrop-blur-sm">
       <Link href="/" className="w-1/3 items-center justify-start">
-        <span className="text-3xl font-bold cursor-pointer">
+        <span className="text-3xl font-quicksandBold cursor-pointer">
           <span className="text-primary">GLA</span> Codify
         </span>
       </Link>
@@ -71,7 +72,7 @@ const ProblemHeader = ({ problemId }) => {
         </Button>
       </div>
       <div className="w-1/3 flex items-center justify-end gap-x-5">
-        <span className="flex items-center gap-1 bg-gray-700/30 py-1 px-2 rounded-md cursor-pointer">
+        <Button variant="outline">
           {showTimer ? (
             <span className="flex items-center gap-2">
               {formatTime(time)}
@@ -83,7 +84,8 @@ const ProblemHeader = ({ problemId }) => {
           ) : (
             <AlarmClock onClick={() => handleClockClick()} />
           )}
-        </span>
+        </Button>
+        <ModeToggle />
         <SignInButton />
       </div>
     </div>

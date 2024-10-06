@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import Editor from "@monaco-editor/react";
 import { Code, Code2, RepeatIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useState, useEffect } from "react";
 
 type CodeEditorProps = {
@@ -21,6 +22,8 @@ type CodeEditorProps = {
 };
 
 export const CodeEditor = ({ problem, onRunCode }: CodeEditorProps) => {
+  const { theme } = useTheme();
+
   const [code, setCode] = useState<string>(problem.visibleCode);
   // const [language, setLanguage] = useState<string>("javascript");
   const [hiddenCode, setHiddenCode] = useState<string>(problem.hiddenCode);
@@ -34,7 +37,7 @@ export const CodeEditor = ({ problem, onRunCode }: CodeEditorProps) => {
       <Editor
         defaultLanguage="java"
         defaultValue={code}
-        theme="vs-dark"
+        theme={theme === "dark" ? "vs-dark" : "default"}
         className="h-full w-full"
         onChange={(value) => setCode(value as string)}
         options={{
@@ -55,12 +58,16 @@ const Footer = ({ onRunCode, code }: FooterProps) => {
   return (
     <div className="flex items-center justify-end sticky bottom-0 pb-2 gap-3 pr-4">
       <Button
-        className="bg-gray-600 font-semibold hover:bg-gray-700"
+        variant="secondary"
+        className="font-semibold text-secondary-foreground"
         onClick={() => onRunCode(code)}
       >
         Run
       </Button>
-      <Button className="bg-green-600 font-semibold hover:bg-green-700">
+      <Button
+        variant="outline"
+        className="bg-green-600 font-semibold hover:bg-green-700"
+      >
         Submit
       </Button>
     </div>

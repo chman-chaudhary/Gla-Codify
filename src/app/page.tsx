@@ -5,17 +5,29 @@ import { Header } from "./components/Header";
 export default function Home() {
   return (
     <>
-      <Header />
       <div>
-        <div className="h-screen flex flex-col items-center justify-center">
-          <h3 className="text-4xl font-medium text-center">Welcome to</h3>
-          <h1 className="text-7xl font-bold my-5">
-            <span className="text-primary">GLA</span> Codify
-          </h1>
+        <Header />
+        <div>
+          <div className="h-screen flex flex-col items-center justify-center backdrop-blur-2xl">
+            <h3 className="text-3xl font-quicksandMedium text-center">
+              Welcome to
+            </h3>
+            <h1 className="text-7xl font-bold my-8 text-center">
+              <span className="text-primary font-bold font-quicksandBold">
+                GLA
+              </span>{" "}
+              Codify.
+            </h1>
+            <h4 className="font-quicksandLight text-xl max-w-[550px] text-center">
+              A platform where you'll find the right content to help you become
+              a coding master.
+            </h4>
+          </div>
+          <MainContent />
         </div>
-        <MainContent />
+        <Footer />
       </div>
-      <Footer />
+      <div className="w-[600px] h-[80px] rounded-xl bg-indigo-800 absolute -z-50 top-0 rotate-45"></div>
     </>
   );
 }

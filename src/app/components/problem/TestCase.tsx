@@ -29,7 +29,7 @@ export const TestCase = () => {
 
   return (
     <div>
-      <h2 className="text-md font-semibold text-gray-800 ml-4 my-1">
+      <h2 className="text-md font-semibold text-secondary-foreground ml-4 my-1">
         Testcases
       </h2>
       <Separator className="my-1" />
@@ -39,7 +39,7 @@ export const TestCase = () => {
             <div key={testcase.id}>
               <div
                 className={
-                  `text-gray-500 rounded-md px-2 py-[2px] hover:text-white hover:bg-gray-500/60` +
+                  `rounded-md px-2 py-[2px] hover:bg-gray-500/60` +
                   (visibleTestCase === testcase.id
                     ? " bg-gray-500/60 text-white"
                     : "")

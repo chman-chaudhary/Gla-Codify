@@ -10,9 +10,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User2, X } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export const SignInButton = () => {
   const { data: session } = useSession();
+  const router = useRouter();
+
   if (session && session.user) {
     return (
       <div className="flex items-center gap-x-5">
@@ -39,5 +42,6 @@ export const SignInButton = () => {
       </div>
     );
   }
-  return <Button onClick={() => signIn("google")}>Sign In</Button>;
+
+  return <Button onClick={() => router.push("/auth")}>Sign In</Button>;
 };

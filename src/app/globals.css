@@ -133,3 +133,27 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
+
+[data-theme="light"] {
+  --scrollbar-track-bg: #f1f1f1;
+}
+
+/* Dark mode styles */
+[data-theme="dark"] {
+  --scrollbar-track-bg: #2e2e2e;
+}
+
+/* For WebKit-based browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: royalblue; /* Scrollbar thumb color */
+  border-radius: 6px; /* Rounded corners */
+  padding-right: 2px;
+}
