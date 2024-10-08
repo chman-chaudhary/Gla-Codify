@@ -72,7 +72,7 @@ const ProblemHeader = ({ problemId }) => {
         </Button>
       </div>
       <div className="w-1/3 flex items-center justify-end gap-x-5">
-        <Button variant="outline">
+        <Button variant="outline" size="sm">
           {showTimer ? (
             <span className="flex items-center gap-2">
               {formatTime(time)}

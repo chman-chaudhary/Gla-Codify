@@ -23,7 +23,8 @@ export default function page({ params }: { params: { problemId: string } }) {
   const [variables, setVaribles] = useState<string>();
   const [problem, setProblem] = useState<NewProblem>({
     id: 1, // Primary key for the problem
-    title: "Add Two Numbers", // Problem title
+    title: "Two Sum", // Problem title
+    slug: "two-sum",
     description: `
     Given an array of integers nums, return the number of unique elements in the array.
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam voluptatibus vero pariatur autem ad perferendis, doloribus dignissimos debitis nisi magnam nesciunt rem totam qui minima, maiores ab vitae quisquam porro!
@@ -106,61 +107,38 @@ export default function page({ params }: { params: { problemId: string } }) {
       },
     ],
     topics: ["Array", "Hash Table", "Two Pointers", "Sliding Window"],
-    hiddenCode: `public class Main {
+    hiddenCode: `
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    
+    ##USER_CODE_HERE##
+
     public static void main(String[] args) {
-        ${variables}
-
-        Solution solution = new Solution();   
-
-        int[] mergedArray = solution.merge(nums1, m, nums2, n);
-
-        System.out.println("Merged array: " + Arrays.toString(mergedArray));
+        String filePath = "/src/problems/two-sum/tests/inputs/##INPUT_FILE_INDEX##.txt"; 
+        List<String> lines = readLinesFromFile(filePath);
+        int num1 = Integer.parseInt(lines.get(0).trim());
+  int num2 = Integer.parseInt(lines.get(1).trim());
+        int result = addTwoNumbers(num1, num2);
+        System.out.println(result);
     }
-}`,
-    visibleCode: `public class Solution {
-    public int[] merge(int[] nums1, int m, int[] nums2, int n) {
-        int i = m - 1, j = n - 1, k = m + n - 1;
-
-        while (i >= 0 && j >= 0) {
-            if (nums1[i] > nums2[j]) {
-                nums1[k] = nums1[i];
-                i--;
-            } else {
-                nums1[k] = nums2[j];
-                j--;
+    public static List<String> readLinesFromFile(String filePath) {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
             }
-            k--;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        while (j >= 0) {
-            nums1[k] = nums2[j];
-            j--;
-            k--;
-        }
-
-        return nums1;
+        return lines;
     }
 }`,
-    testCases: [
-      {
-        input: {
-          nums1: [1, 2, 3, 0, 0, 0],
-          m: 3,
-          nums2: [2, 5, 6],
-          n: 3,
-        },
-        output: [1, 2, 2, 3, 5, 6],
-      },
-      {
-        input: {
-          nums1: [0],
-          m: 0,
-          nums2: [1],
-          n: 1,
-        },
-        output: [1],
-      },
-    ],
+    visibleCode: `public int addTwoNumbers(int num1, int num2) {
+      
+}`,
   });
 
   // useEffect(() => {
@@ -180,9 +158,12 @@ export default function page({ params }: { params: { problemId: string } }) {
   //   fetchProblems();
   // }, []);
 
-  const populateTestcases = (hiddenCode: string, testcase: object) => {};
-
-  const handleRunCode = async (code: string) => {};
+  const handleRunCode = async (code: string) => {
+    // console.log(code);
+    const completeCode = problem.hiddenCode.replace("##USER_CODE_HERE##", code);
+    // console.log(completeCode);
+    const response = await executeCode(code, problem.slug);
+  };
 
   return (
     <div className="w-full h-screen flex flex-col">

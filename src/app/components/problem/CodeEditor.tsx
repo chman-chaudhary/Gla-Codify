@@ -33,7 +33,7 @@ export const CodeEditor = ({ problem, onRunCode }: CodeEditorProps) => {
   }, [problem.visibleCode]);
 
   return (
-    <div className="h-full w-full bg-gray-700">
+    <div className="h-full w-full">
       <Editor
         defaultLanguage="java"
         defaultValue={code}
@@ -42,6 +42,8 @@ export const CodeEditor = ({ problem, onRunCode }: CodeEditorProps) => {
         onChange={(value) => setCode(value as string)}
         options={{
           minimap: { enabled: false },
+          scrollBeyondLastLine: false,
+          scrollBeyondLastColumn: 3,
         }}
       />
       <Footer onRunCode={onRunCode} code={code} />

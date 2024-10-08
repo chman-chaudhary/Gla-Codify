@@ -46,6 +46,7 @@ export type Problem = {
 export type NewProblem = {
   id: number; // Primary key for the problem
   title: string; // Problem title
+  slug: string;
   description: string; // Problem description
   companies: string[]; // Array of companies associated with the problem
   constraints: string[] | null; // Problem constraints
@@ -69,10 +70,4 @@ export type NewProblem = {
     userId: string | null;
     problemId: number | null;
   }[]; // Array of submissions, possibly empty
-  testCases: {
-    input: {
-      [key: string]: string | number | number[] | string[];
-    };
-    output: any;
-  }[];
 };
