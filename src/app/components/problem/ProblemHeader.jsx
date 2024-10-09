@@ -51,7 +51,7 @@ const ProblemHeader = ({ problemId }) => {
           <span className="text-primary">GLA</span> Codify
         </span>
       </Link>
-      <div className="flex items-center justify-center gap-2 w-1/3">
+      {/* <div className="flex items-center justify-center gap-2 w-1/3">
         <Button size="icon" variant="outline" disabled={problemId == "1"}>
           <Link href={`/problem/${parseInt(problemId) - 1}`}>
             <ChevronLeft />
@@ -70,7 +70,7 @@ const ProblemHeader = ({ problemId }) => {
             <ChevronRight />
           </Link>
         </Button>
-      </div>
+      </div> */}
       <div className="w-1/3 flex items-center justify-end gap-x-5">
         <Button variant="outline" size="sm">
           {showTimer ? (

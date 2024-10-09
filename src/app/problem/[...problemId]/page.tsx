@@ -15,7 +15,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { NewProblem, Problem } from "@/actions/types";
 import { Status } from "@prisma/client";
-import { executeCode } from "@/actions/executeCode";
+import axios from "axios";
 
 export default function page({ params }: { params: { problemId: string } }) {
   const { data: session } = useSession();
@@ -107,37 +107,8 @@ export default function page({ params }: { params: { problemId: string } }) {
       },
     ],
     topics: ["Array", "Hash Table", "Two Pointers", "Sliding Window"],
-    hiddenCode: `
-import java.io.*;
-import java.util.*;
-
-public class Main {
-    
-    ##USER_CODE_HERE##
-
-    public static void main(String[] args) {
-        String filePath = "/src/problems/two-sum/tests/inputs/##INPUT_FILE_INDEX##.txt"; 
-        List<String> lines = readLinesFromFile(filePath);
-        int num1 = Integer.parseInt(lines.get(0).trim());
-  int num2 = Integer.parseInt(lines.get(1).trim());
-        int result = addTwoNumbers(num1, num2);
-        System.out.println(result);
-    }
-    public static List<String> readLinesFromFile(String filePath) {
-        List<String> lines = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                lines.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return lines;
-    }
-}`,
-    visibleCode: `public int addTwoNumbers(int num1, int num2) {
-      
+    visibleCode: `public static int sum(int num1, int num2) {
+    // write code here
 }`,
   });
 
@@ -158,11 +129,14 @@ public class Main {
   //   fetchProblems();
   // }, []);
 
-  const handleRunCode = async (code: string) => {
-    // console.log(code);
-    const completeCode = problem.hiddenCode.replace("##USER_CODE_HERE##", code);
-    // console.log(completeCode);
-    const response = await executeCode(code, problem.slug);
+  const handleRunCode = async (code: string, languageId: string) => {
+    // const response = await executeCode(code, problem.slug);
+    const response = await axios.post("/api/submission", {
+      code,
+      languageId,
+      problemSlug: problem.slug,
+    });
+    console.log(response);
   };
 
   return (
@@ -172,11 +146,11 @@ public class Main {
         direction="horizontal"
         className="max-w-full min-w-full rounded-lg md:min-w-[450px]"
       >
-        <ResizablePanel defaultSize={40} minSize={25}>
+        <ResizablePanel defaultSize={35} minSize={25}>
           <ProblemDescription problem={problem as NewProblem} />
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel defaultSize={60} minSize={40}>
+        <ResizablePanel defaultSize={65} minSize={40}>
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={70}>
               <CodeEditor

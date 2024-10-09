@@ -1,88 +1,8 @@
 "use server";
 
-import axios from "axios";
 import fs from "fs";
 
 const MOUNT_PATH = "src/problems";
-
-export const executeCode = async (code: string, slug: string) => {
-  const response = await runCode(code, slug);
-  return response;
-};
-
-const runCode = async (code: string, problemId: string) => {
-  const problem = await getProblem(problemId, "java");
-  problem.fullBoilerplateCode = problem.fullBoilerplateCode.replace(
-    "##USER_CODE_HERE##",
-    code
-  );
-  const options = {
-    method: "POST",
-    url: "https://judge0-ce.p.rapidapi.com/submissions/batch",
-    params: {
-      base64_encoded: "false",
-    },
-    headers: {
-      "x-rapidapi-key": "45b9847af7msh1281e5bd926cde7p12db9fjsn60354321f216",
-      "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-      "Content-Type": "application/json",
-    },
-    data: {
-      submissions: problem.inputs.map((input, index) => ({
-        language_id: 62,
-        source_code: problem.fullBoilerplateCode.replace(
-          "##INPUT_FILE_INDEX##",
-          index.toString()
-        ),
-        expected_output: problem.outputs[index],
-      })),
-    },
-  };
-
-  try {
-    const response = await axios.request(options);
-    console.log("Create Submission", response.data);
-    let tokens: any = [];
-    response.data.map((tokenObj: { token: string }) => {
-      tokens.push(tokenObj.token);
-    });
-    tokens = tokens.join(",");
-    const result = await getSubmission(tokens);
-    result.map((res: any) => {
-      console.log({
-        expected: res.expected_output,
-        stdout: res.stdout,
-        status: res.status,
-        language: res.language,
-      });
-    });
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const getSubmission = async (tokens: string) => {
-  const options = {
-    method: "GET",
-    url: "https://judge0-ce.p.rapidapi.com/submissions/batch",
-    params: {
-      tokens: tokens,
-      base64_encoded: "false",
-      fields: "*",
-    },
-    headers: {
-      "x-rapidapi-key": "45b9847af7msh1281e5bd926cde7p12db9fjsn60354321f216",
-      "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-    },
-  };
-
-  try {
-    const response = await axios.request(options);
-    return response.data.submissions;
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 export const getProblem = async (problemId: string, languageId: any) => {
   const fullBoilderPlate = await getProblemFullBoilerplateCode(

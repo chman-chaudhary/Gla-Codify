@@ -21,7 +21,7 @@ export const SignInButton = () => {
       <div className="flex items-center gap-x-5">
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Avatar>
+            <Avatar className="size-10">
               <AvatarImage src={session.user?.image!} />
               <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-2xl text-white font-bold">
                 {session.user.name?.charAt(0)}

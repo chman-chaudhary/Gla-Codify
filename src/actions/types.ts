@@ -55,7 +55,6 @@ export type NewProblem = {
   isSolved: boolean | undefined; // Whether the user has solved the problem
   lastSolverId: string | null; // ID of the last solver, can be null if no one has solved
   topics: string[];
-  hiddenCode: string;
   visibleCode: string;
   examples: {
     image: string | null;

@@ -5,6 +5,7 @@ const AllProblems = [
   {
     id: "1",
     title: "Two Sum",
+    slug: "two-sum",
     description:
       "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
     difficulty: Difficulty.EASY,
@@ -32,6 +33,7 @@ const AllProblems = [
   {
     id: "2",
     title: "Add Two Numbers",
+    slug: "add-two-numbers",
     description:
       "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.",
     difficulty: Difficulty.MEDIUM,
@@ -62,6 +64,7 @@ const AllProblems = [
   {
     id: "3",
     title: "Longest Substring Without Repeating Characters",
+    slug: "longest-substring-without-repeating-characters",
     description:
       "Given a string s, find the length of the longest substring without repeating characters.",
     difficulty: Difficulty.HARD,

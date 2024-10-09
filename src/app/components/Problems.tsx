@@ -92,7 +92,7 @@ export const Problems = () => {
                 className="max-w-48 min-w-48 hover:underline"
                 onClick={() => {
                   session && session.user
-                    ? router.push(`/problem/${problem.id}`)
+                    ? router.push(`/problem/${problem.slug}`)
                     : router.push("/auth");
                 }}
               >
