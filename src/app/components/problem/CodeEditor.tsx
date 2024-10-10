@@ -21,7 +21,7 @@ type CodeEditorProps = {
 };
 
 export const CodeEditor = ({ problem, onRunCode }: CodeEditorProps) => {
-  const { theme } = useTheme();
+  const { theme, systemTheme } = useTheme();
 
   const [code, setCode] = useState<string>(problem.visibleCode);
   const [languageId, setLanguageId] = useState<string>("java");
@@ -37,7 +37,15 @@ export const CodeEditor = ({ problem, onRunCode }: CodeEditorProps) => {
       <Editor
         defaultLanguage="java"
         defaultValue={code}
-        theme={theme === "dark" ? "vs-dark" : "default"}
+        theme={
+          theme === "system"
+            ? systemTheme === "dark"
+              ? "vs-dark"
+              : "default"
+            : theme === "dark"
+            ? "vs-dark"
+            : "default"
+        }
         className="h-full w-full"
         onChange={(value) => setCode(value as string)}
         options={{
@@ -76,10 +84,15 @@ const Footer = ({
       <Button
         variant="secondary"
         className="font-semibold text-secondary-foreground"
-        onClick={() => {
+        onClick={async () => {
           setIsLoading(true);
-          onRunCode(code, languageId);
-          setIsLoading(false);
+          try {
+            await onRunCode(code, languageId);
+          } catch (error) {
+            console.error("Error while execution of code:", error);
+          } finally {
+            setIsLoading(false);
+          }
         }}
         disabled={isLoading}
       >
@@ -89,10 +102,15 @@ const Footer = ({
         variant="outline"
         className="bg-green-600 font-semibold text-white hover:bg-green-700"
         disabled={isLoading}
-        onClick={() => {
+        onClick={async () => {
           setIsLoading(true);
-          onRunCode(code, languageId);
-          setIsLoading(false);
+          try {
+            await onRunCode(code, languageId);
+          } catch (error) {
+            console.error("Error while execution of code:", error);
+          } finally {
+            setIsLoading(false);
+          }
         }}
       >
         {isLoading ? "Submitting..." : "Submit"}

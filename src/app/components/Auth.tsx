@@ -12,18 +12,22 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 
 const Auth = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
-  if (session && session.user) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (session && session.user) {
+      router.push("/");
+    }
+  });
 
   return (
-    <Card className="bg-secondary">
+    <Card className="bg-secondary px-5">
       <CardHeader>
         <CardTitle className="text-4xl font-quicksandBold">
           Welcome to <span className="text-primary">GLA</span> Codify
@@ -35,7 +39,12 @@ const Auth = () => {
       <CardContent className="flex flex-col gap-y-4">
         <Button
           className=" text-white text-xl py-8 rounded-xl font-quicksandBold transition duration-300 ease-in-out hover:-translate-y-3"
-          onClick={() => signIn("google")}
+          disabled={isLoading}
+          onClick={async () => {
+            setIsLoading(true);
+            await signIn("google");
+            setIsLoading(false);
+          }}
         >
           <FaGoogle className="size-6 mr-4" /> Continue with Google
         </Button>
@@ -47,8 +56,7 @@ const Auth = () => {
           <FaGithub className="size-6 mr-4" /> Continue with Github
         </Button>
       </CardContent>
-      <Separator className="mb-5" />
-      <CardFooter className="flex flex-col gap-y-3">
+      <CardFooter className="flex flex-col gap-y-3 mt-5">
         <CardTitle className="text-5xl font-quicksandBold">
           <span className="text-primary">GLA</span> University
         </CardTitle>

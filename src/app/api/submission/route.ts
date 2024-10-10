@@ -47,7 +47,6 @@ export async function POST(req: NextRequest) {
     });
     tokens = tokens.join(",");
     const result = await checkBatchStatus(tokens);
-    console.log(result);
     return NextResponse.json({ result });
   } catch (e) {
     console.log("Error while creating submission", e);

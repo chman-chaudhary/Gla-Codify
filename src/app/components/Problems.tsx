@@ -22,6 +22,12 @@ import { useRouter } from "next/navigation";
 import AllProblems from "@/lib/AllProblems";
 import { FaYoutube } from "react-icons/fa";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type Problems = {
   id: number; // Primary key for the problem
@@ -83,9 +89,27 @@ export const Problems = () => {
             <TableRow key={problem.id} className="cursor-pointer">
               <TableCell className="w-32 pl-8 flex items-center">
                 {problem.status ? (
-                  <CheckCircle className="size-4 ml-3 text-green-500" />
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <CheckCircle className="size-4 ml-3 text-green-500" />
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-green-500">
+                        <span className="text-white">Solved</span>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 ) : (
-                  <BsDash className="size-4 ml-3 text-yellow-500" />
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <BsDash className="size-4 ml-3 text-yellow-500" />
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-yellow-500">
+                        <span className="text-white">Unsolved</span>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )}
               </TableCell>
               <TableCell

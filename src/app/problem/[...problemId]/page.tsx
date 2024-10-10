@@ -19,8 +19,7 @@ import axios from "axios";
 
 export default function page({ params }: { params: { problemId: string } }) {
   const { data: session } = useSession();
-  const [output, setOutput] = useState<any>(null);
-  const [variables, setVaribles] = useState<string>();
+  const [response, setResponse] = useState<any>(null);
   const [problem, setProblem] = useState<NewProblem>({
     id: 1, // Primary key for the problem
     title: "Two Sum", // Problem title
@@ -131,12 +130,13 @@ export default function page({ params }: { params: { problemId: string } }) {
 
   const handleRunCode = async (code: string, languageId: string) => {
     // const response = await executeCode(code, problem.slug);
-    const response = await axios.post("/api/submission", {
+    const response: any = await axios.post("/api/submission", {
       code,
       languageId,
       problemSlug: problem.slug,
     });
-    console.log(response);
+    console.log(response.data.result);
+    setResponse(response.data.result);
   };
 
   return (
@@ -160,7 +160,7 @@ export default function page({ params }: { params: { problemId: string } }) {
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel defaultSize={30}>
-              <TestCase />
+              <TestCase response={response} />
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>
